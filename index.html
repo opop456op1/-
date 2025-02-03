@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>สุ่มระดับพลัง</title>
+  <title>สุ่มสายอาชีพ</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -36,27 +36,56 @@
       margin-top: 20px;
       color: #333;
     }
+
+    .percentage {
+      font-size: 18px;
+      color: #555;
+    }
   </style>
 </head>
 <body>
 
-  <h1>ระบบสุ่มระดับพลัง</h1>
-  <button onclick="generatePowerLevel()">สุ่ม 1 ครั้ง</button>
+  <h1>ระบบสุ่มสายอาชีพ</h1>
+  <button onclick="generateJob()">สุ่ม 1 ครั้ง</button>
 
   <div class="result" id="result"></div>
+  <div class="percentage" id="percentage"></div>
 
   <script>
-    const levels = [
-      "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11.ปัตภี", 
-      "12.ฟ้า", "13.โลก", "14.สวรรค์", "15.กลึ่งเซียน", "16.เซียนเทียม", "17.เซียนแท้"
+    // สายอาชีพและเปอร์เซ็นต์ที่กำหนดให้
+    const jobs = [
+      { name: "นักดาบ", probability: 10 },
+      { name: "แทงค์", probability: 15 },
+      { name: "นักเวทย์", probability: 10 },
+      { name: "นักฆ่า", probability: 8 },
+      { name: "ซับพรอต", probability: 12 },
+      { name: "นักรบ (ดาบใหญ่)", probability: 10 },
+      { name: "ฮิวเลอร์", probability: 7 },
+      { name: "เนโคแมนเซอร์", probability: 6 },
+      { name: "นักอัณเชิญ", probability: 5 },
+      { name: "ผู้ใช้พลังภูต", probability: 7 },
+      { name: "เทมเมอร์", probability: 5 },
+      { name: "พลังจิต", probability: 7 }
     ];
-    
-    const stages = ["ต้น", "กลาง", "สูง", "สูงสุด"];
 
-    function generatePowerLevel() {
-      const level = levels[Math.floor(Math.random() * levels.length)];
-      const stage = stages[Math.floor(Math.random() * stages.length)];
-      document.getElementById("result").innerText = `ระดับ : ${level} ขั้น ${stage}`;
+    function generateJob() {
+      // คำนวณค่ารวมเปอร์เซ็นต์ทั้งหมด
+      const totalProbability = jobs.reduce((sum, job) => sum + job.probability, 0);
+
+      // สุ่มเลข 0 ถึง totalProbability เพื่อเลือกสายอาชีพตามเปอร์เซ็นต์
+      const randomNum = Math.floor(Math.random() * totalProbability);
+
+      let sum = 0;
+      for (let i = 0; i < jobs.length; i++) {
+        sum += jobs[i].probability;
+        if (randomNum < sum) {
+          // แสดงผลสายอาชีพที่ถูกสุ่ม
+          document.getElementById("result").innerText = `สายอาชีพ: ${jobs[i].name}`;
+          // แสดงเปอร์เซ็นต์
+          document.getElementById("percentage").innerText = `เปอร์เซ็นต์: ${jobs[i].probability}%`;
+          break;
+        }
+      }
     }
   </script>
 
